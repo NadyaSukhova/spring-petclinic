@@ -47,15 +47,4 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            // send email about build status
-        }
-        success {
-
-        }
-        failure {
-
-        }
-    }
 }
