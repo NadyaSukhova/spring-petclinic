@@ -1,3 +1,5 @@
+def dv
+
 pipeline {
     agent any
     tools {
@@ -19,7 +21,7 @@ pipeline {
                 }
             }
             steps {
-                echo "building version ${NEW_VERSION}"
+                gv.buildApp()
                 //sh 'mvn install'
             }
         }
