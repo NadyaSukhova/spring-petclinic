@@ -1,5 +1,3 @@
-def dv
-
 pipeline {
     agent any
     tools {
@@ -14,13 +12,6 @@ pipeline {
         NEW_VERSION = '1.3.0'
     }
     stages {
-       stage("init") {
-            steps {
-                script {
-                    gv = load "script.groovy"
-                }
-            }
-        }
         stage("build") {
             when {
                 expression {
@@ -28,7 +19,7 @@ pipeline {
                 }
             }
             steps {
-                gv.buildApp()
+                echo "building"
                 //sh 'mvn install'
             }
         }
@@ -41,7 +32,6 @@ pipeline {
             }
             steps {
                 echo "testing"
-                gv.testApp()
             }
         }
 
@@ -53,7 +43,6 @@ pipeline {
             }
             steps {
                 echo "deploying version ${params.VERSION}"
-                gv.deployApp()
             }
         }
     }
