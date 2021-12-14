@@ -34,6 +34,7 @@ pipeline {
             }
             steps {
                 echo "testing"
+                gv.testApp()
             }
         }
 
@@ -45,6 +46,7 @@ pipeline {
             }
             steps {
                 echo "deploying version ${params.VERSION}"
+                gv.deployApp()
             }
         }
     }
