@@ -31,7 +31,7 @@ pipeline {
                 }
             }
             steps {
-                echo "testing with ${SERVER_CREDENTIALS}"
+                echo "testing"
             }
         }
 
