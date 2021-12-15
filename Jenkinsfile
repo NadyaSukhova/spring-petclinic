@@ -8,7 +8,7 @@ pipeline {
         }
 		stage("create docker image") {
 			agent { dockerfile {
-					 dir '.'
+					 dir './Dockerfile'
 				}
 			}
 			steps {
