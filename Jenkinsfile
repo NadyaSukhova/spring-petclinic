@@ -10,8 +10,8 @@ pipeline {
 			agent { dockerfile {
 					 filename 'Dockerfile'
 					 // dir 'С://Users/Hope/AppData/Local/Jenkins/.jenkins/workspace/petclinic-pipeline_main/'
-					  dir "${params.DOCKERFILE_PATH}"
-					 // dir "/c/Users/Hope/AppData/Local/Jenkins/.jenkins/workspace/petclinic-pipeline_main/"
+					 // dir "${params.DOCKERFILE_PATH}"
+					  dir "/c/Users/Hope/AppData/Local/Jenkins/.jenkins/workspace/petclinic-pipeline_main/"
 				}
 			}
 			steps {
