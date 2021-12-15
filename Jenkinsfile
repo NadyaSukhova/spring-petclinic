@@ -7,7 +7,10 @@ pipeline {
             }
         }
 		stage("create docker image") {
-			agent { dockerfile true }
+			agent { dockerfile {
+					 dir '.'
+				}
+			}
 			steps {
 				echo "building the image"
 			}
