@@ -1,5 +1,5 @@
 pipeline {
-    agent { dockerfile true }
+    agent any
     stages {
         stage("build") {
             steps {
@@ -7,9 +7,10 @@ pipeline {
             }
         }
 		stage("create docker image") {
-            steps {
-                echo "building the image"
-            }
+			agent { dockerfile true }
+			steps {
+				echo "building the image"
+			}
         }
     }
 }
