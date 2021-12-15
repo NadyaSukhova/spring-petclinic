@@ -8,8 +8,8 @@ pipeline {
         }
 		stage("create docker image") {
 			agent { dockerfile {
-					 dir 'C:\\Users\\Hope\\petclinic\\spring-petclinic'
-					 reuseNode true
+				     filename 'Dockerfile'
+					 dir 'C:\\Users\\Hope\\petclinic\\spring-petclinic\\'
 				}
 			}
 			steps {
