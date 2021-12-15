@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { dockerfile true }
     stages {
         stage("build") {
             steps {
@@ -9,7 +9,7 @@ pipeline {
 		stage("create docker image") {
             steps {
                 dir ('docker') {
-					sh 'docker build Dockerfile'
+					sh 'docker build dockerfile'
 				}
             }
         }
