@@ -8,8 +8,8 @@ pipeline {
         }
 		stage("create docker image") {
 			agent { dockerfile {
-				     filename 'Dockerfile'
-					 dir 'C:\\Users\\Hope\\petclinic\\spring-petclinic\\'
+					 filename 'Dockerfile'
+					 dir '/c/Users/Hope/AppData/Local/Jenkins/.jenkins/workspace/petclinic-pipeline_main/'
 				}
 			}
 			steps {
