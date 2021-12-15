@@ -8,7 +8,9 @@ pipeline {
         }
 		stage("create docker image") {
             steps {
-                sh 'docker build dockerfile'
+                dir (env.WORKSPACE) {
+					sh 'docker build Dockerfile'
+				}
             }
         }
     }
