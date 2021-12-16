@@ -9,7 +9,7 @@ pipeline {
 		stage("create docker image") {
 			steps {
 				echo "building the image"
-				sh 'docker build .'
+				bat 'docker build .'
 			}
         }
     }
