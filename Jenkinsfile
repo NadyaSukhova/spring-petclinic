@@ -9,7 +9,7 @@ pipeline {
 		stage("create docker image") {
 			agent { dockerfile {
 					 filename 'Dockerfile'
-					 dir 'C://Users/Hope/AppData/Local/Jenkins/.jenkins/workspace/petclinic-pipeline_main@2@tmp
+					 dir "C://Users/Hope/AppData/Local/Jenkins/.jenkins/workspace/petclinic-pipeline_main@2@tmp"
 				}
 			}
 			steps {
