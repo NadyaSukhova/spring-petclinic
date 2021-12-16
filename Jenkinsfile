@@ -12,7 +12,6 @@ pipeline {
             }
 			agent { dockerfile {
 					 filename 'Dockerfile'
-					 dir "C://Users/Hope/petclinic/spring-petclinic"
 				}
 			}
 			steps {
