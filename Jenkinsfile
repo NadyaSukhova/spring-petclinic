@@ -1,30 +1,38 @@
 pipeline {
     agent any
-	environment {
-		USER = 'puffik4ever'
-		REP = 'petclinic'
-		VERSION = '2.5.0-SNAPSHOT'
-		ART_ID = 'spring-petclinic'
-	}
+    environment {
+        JAR_VERSION = sh (returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout').trim()
+        JAR_ARTIFACT_ID = sh (returnStdout: true, script: 'mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout').trim()
+        DOCKER_HUB_VERSION = JAR_VERSION.replace("-SNAPSHOT", "-snapshot")
+        DOCKER_HUB_USER = 'puffik4ever'
+        DOCKER_HUB_REPOSITORY = 'petclinic'
+    }
     stages {
-        stage("say something") {
+        stage("Init") {
             steps {
-                echo 'Im just sayin'
+                echo 'BE FIRE NOT TO BURN, BE FIRE TO SEND LIGHT'
             }
         }
-		stage("build docker image") {
-			steps {
-				echo "building the image"
-				docker.build("${USER}/${REP}:${VERSION}", "--build-arg JAR_VERSION=${VERSION} --build-arg JAR_ARTIFACT_ID=${ART_ID} -f .")
-			}
+        stage("Build") {
+            steps {
+                script {
+                    docker.build("${DOCKER_HUB_USER}/${DOCKER_HUB_REPOSITORY}:${DOCKER_HUB_VERSION}", "--build-arg JAR_VERSION=${JAR_VERSION} --build-arg JAR_ARTIFACT_ID=${JAR_ARTIFACT_ID} -f Dockerfile .")
+                }
+            }
         }
-		stage("push docker image") {
-		steps {
-			withCredentials([usernamePassword(credentialsId: 'credentials', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
-						sh 'echo ${PASSWORD} | docker login -u ${USER} --password-stdin'
-						bat 'docker push ${USER}/${REP}:${VERSION}'
-					}
-			}
-		}
-    }
+        stage("Login to Docker Hub") {
+            when {
+                expression {
+                    env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'dev'
+                }
+            }
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'docker_hub_credentials', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASSWORD')
+                    ]) {
+                    sh 'echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin'
+                }
+            }
+        }
+	}
 }
