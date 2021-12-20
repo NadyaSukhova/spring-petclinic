@@ -15,7 +15,7 @@ pipeline {
 		stage("build docker image") {
 			steps {
 				echo "building the image"
-				docker.build("${USER}/${REP}:${VERSION}", "--build-arg JAR_VERSION=${VERSION} --build-arg JAR_ARTIFACT_ID=${ART_ID} -f Dockerfile .")
+				docker.build("${USER}/${REP}:${VERSION}", "--build-arg JAR_VERSION=${VERSION} --build-arg JAR_ARTIFACT_ID=${ART_ID} -f .")
 			}
         }
 		stage("push docker image") {
