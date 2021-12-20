@@ -1,15 +1,22 @@
 pipeline {
     agent any
+	environment {
+		USER = 'puffik4ever'
+		REP = 'petclinic'
+		VERSION = '2.5.0-SNAPSHOT'
+		ART_ID = 'spring-petclinic'
+	}
     stages {
-        stage("build") {
+        stage("say something") {
             steps {
-                echo 'building the app'
+                echo 'i'm just sayin...'
             }
         }
-		stage("create docker image") {
+		stage("build and push docker image") {
 			steps {
 				echo "building the image"
-				bat 'docker build .'
+				docker.build("${USER}/${REP}:${VERSION}", "--build-arg JAR_VERSION=${VERSION} --build-arg JAR_ARTIFACT_ID=${ART_ID} -f Dockerfile .")
+				bat 'docker push ${USER}/${REP}:${VERSION}'
 			}
         }
     }
