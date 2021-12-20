@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage("say something") {
             steps {
-                echo 'i'm just sayin...'
+                echo 'Im just sayin'
             }
         }
 		stage("build and push docker image") {
