@@ -5,6 +5,7 @@ pipeline {
 		REP = 'petclinic'
 		VERSION = '2.5.0-SNAPSHOT'
 		ART_ID = 'spring-petclinic'
+		DOCKERHUB_CREDENTIALS=credentials('dockerhub')
 	}
     stages {
         stage("say something") {
@@ -23,9 +24,7 @@ pipeline {
         }
 		stage("login and push docker image") {
 			steps {
-				withCredentials([usernamePassword(credentialsId: 'credentials', passwordVariable: 'pass_dockerhub', usernameVariable: 'user_dockerhub')]) {
-					bat "echo ${pass_dockerhub} | docker login -u ${user_dockerhub} --password-stdin"
-				}
+				bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 			}
 		}
     }
