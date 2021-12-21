@@ -31,7 +31,7 @@ pipeline {
 				}
 			}
 		}
-		stage("pull from DOcker Hub") {
+		stage("pull and run from Docker Hub") {
             steps {
 				echo "pulling from Docker Hub"
                 bat "docker pull ${USER}/${REP}:${VERSION}"
