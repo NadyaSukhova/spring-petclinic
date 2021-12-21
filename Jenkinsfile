@@ -5,7 +5,6 @@ pipeline {
 		REP = 'petclinic'
 		VERSION = '2.5.0-SNAPSHOT'
 		ART_ID = 'spring-petclinic'
-		PUSH_COMMAND = "docker push" + "${USER}/${REP}:${VERSION.toLowerCase()}"
 	}
     stages {
         stage("say something") {
@@ -26,7 +25,7 @@ pipeline {
 		steps {
 			withCredentials([usernamePassword(credentialsId: 'credentials', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
 						echo "login in and pushing the image"
-						bat '${PUSH_COMMAND}'
+						sh 'docker push ${USER}/${REP}:${VERSION.toLowerCase()}'
 					}
 			}
 		}
