@@ -21,13 +21,23 @@ pipeline {
 				}
 			}
         }
-		stage("login and push docker image") {
+		stage("login and push into docker image") {
 			steps {
 				withCredentials([usernamePassword(credentialsId: 'credentials_dockerhub', passwordVariable: 'pass_dockerhub', usernameVariable: 'user_dockerhub')]) {
+					echo "loging in Docker Hub"
 					bat "echo ${pass_dockerhub}| docker login -u ${user_dockerhub} --password-stdin"
+					echo "pushing into Docker Hub"
 					bat "docker push ${USER}/${REP}:${VERSION}"
 				}
 			}
 		}
+		stage("pull from DOcker Hub") {
+            steps {
+				echo "pulling from Docker Hub"
+                bat "docker pull ${USER}/${REP}:${VERSION}"
+				echo "run the app"
+				bat "docker run -p 3000:3000 ${USER}/${REP}:${VERSION}"
+            }
+        }
     }
 }
