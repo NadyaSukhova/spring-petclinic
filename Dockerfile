@@ -12,6 +12,8 @@ FROM openjdk:11-jre-slim
 
 COPY --from=build /petclinic/target/spring-petclinic-*.jar /petclinic.jar
 
-CMD ["java", "-jar", "petclinic.jar"]
+EXPOSE 3000
+
+CMD ["java", "-jar", "-Dserver.port=3000", "petclinic.jar"]
 
 # RUN echo «Hello from me!!»
