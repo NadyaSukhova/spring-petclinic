@@ -25,7 +25,7 @@ pipeline {
 		steps {
 			withCredentials([usernamePassword(credentialsId: 'credentials', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
 						echo "login in and pushing the image"
-						echo '$PASSWORD"
+						echo '$PASSWORD'
 						bat "echo ${PASSWORD} | docker login -u ${USER} --password-stdin"
 						sh "docker push ${USER}/${REP}:${VERSION.toLowerCase()}"
 					}
