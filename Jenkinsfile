@@ -4,6 +4,7 @@ pipeline {
 		USER = 'puffik4ever'
 		rep = 'petclinic'
 		VERSION = '2.5.0-SNAPSHOT'
+		HUB_VERSION = '2.5.0-snapshot'
 		ART_ID = 'spring-petclinic'
 	}
     stages {
@@ -25,7 +26,7 @@ pipeline {
 		steps {
 			withCredentials([usernamePassword(credentialsId: 'credentials', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
 						echo "login in and pushing the image"
-						bat 'docker push ${USER}/${rep}:${VERSION.replace("-SNAPSHOT", "-snapshot")}'
+						bat 'docker push ${USER}/${rep}:${HUB_VERSION}'
 					}
 			}
 		}
