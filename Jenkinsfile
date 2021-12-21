@@ -24,7 +24,10 @@ pipeline {
 		stage("login and push docker image") {
 			steps {
 				withCredentials([usernamePassword(credentialsId: 'credentials_dockerhub', passwordVariable: 'pass_dockerhub', usernameVariable: 'user_dockerhub')]) {
-					bat "echo 123456789 | docker login -u puffik4ever --password-stdin"
+					cmd_exec("echo 123456789 | docker login -u puffik4ever --password-stdin")
+				}
+				def cmd_exec(command) {
+					return bat(returnStdout: true, script: "${command}").trim()
 				}
 			}
 		}
