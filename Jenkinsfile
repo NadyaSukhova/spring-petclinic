@@ -23,11 +23,8 @@ pipeline {
         }
 		stage("login and push docker image") {
 		steps {
-			withCredentials([usernamePassword(credentialsId: 'credentials', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
-						echo "login in and pushing the image"
-						bat '$PASSWORD | docker login -u $USER --password-stdin
-						sh "docker push ${USER}/${REP}:${VERSION.toLowerCase()}"
-					}
+			withCredentials([usernamePassword(credentialsId: 'credentials', passwordVariable: 'pass_dockerhub', usernameVariable: 'user_dockerhub')]) {
+				bat 'echo ${pass_dockerhub} | docker login -u ${user_dockerhub} --password-stdin'
 			}
 		}
     }
