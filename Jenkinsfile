@@ -29,5 +29,6 @@ pipeline {
                     sh 'echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USER} --password-stdin'
                 }
             }
+		}
     }
 }
