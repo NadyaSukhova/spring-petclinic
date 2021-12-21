@@ -1,10 +1,10 @@
 pipeline {
     agent any
 	environment {
-		user = 'puffik4ever'
+		USER = 'puffik4ever'
 		rep = 'petclinic'
-		version = '2.5.0-SNAPSHOT'
-		art_id = 'spring-petclinic'
+		VERSION = '2.5.0-SNAPSHOT'
+		ART_ID = 'spring-petclinic'
 	}
     stages {
         stage("say something") {
@@ -17,15 +17,15 @@ pipeline {
 				echo "building the image"
 				
 				script {
-					docker.build("${user}/${rep}:${version}", "--build-arg JAR_VERSION=${version} --build-arg JAR_ARTIFACT_ID=${art_id} -f Dockerfile .")
+					docker.build("${USER}/${rep}:${VERSION}", "--build-arg JAR_VERSION=${VERSION} --build-arg JAR_ARTIFACT_ID=${ART_ID} -f Dockerfile .")
 				}
 			}
         }
 		stage("push docker image") {
 		steps {
-			withCredentials([usernamePassword(credentialsId: 'credentials', usernameVariable: 'user', passwordVariable: 'PASSWORD')]) {
+			withCredentials([usernamePassword(credentialsId: 'credentials', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
 						echo "login in and pushing the image"
-						bat 'docker push ${user}/${rep}:${version.toLowerCase()}'
+						bat 'docker push ${USER}/${rep}:${VERSION.replace("-SNAPSHOT", "-snapshot")}'
 					}
 			}
 		}
