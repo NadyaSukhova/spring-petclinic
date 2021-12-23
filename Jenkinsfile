@@ -9,19 +9,15 @@ pipeline {
 		NET_CURL = UUID.randomUUID().toString()
 	}
     stages {
-        stage("say something") {
+        stage("say something and create nerwork") {
             steps {
                 echo 'Im just sayin'
 				echo 'open'
 				bat "docker network create ${NET_PET}"
-				script {
-					inner.call(NET_PET)
-					}
 				bat "docker network rm ${NET_PET}"
 				echo 'close'
             }
         }
-		
-		
+
     }
 }
