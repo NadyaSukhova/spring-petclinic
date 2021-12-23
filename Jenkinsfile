@@ -13,9 +13,13 @@ pipeline {
             steps {
                 echo 'Im just sayin'
 				echo 'open'
-				bat "docker network create ${networkId}"
+				script {
+					docker network create ${networkId}
+				}
 				inner.call(networkId)
-				bat "docker network rm ${networkId}"
+				script {
+					docker network rm ${networkId}
+					}
 				echo 'close'
             }
         }
