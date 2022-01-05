@@ -61,7 +61,7 @@ pipeline {
 				echo "run curl container"
 				script {
 					sleep(60)
-					def curlOutput = bat (script: "docker run --rm curlimages/curl:7.81.0 -L -v http://$(IP):3000/",
+					def curlOutput = bat (script: "docker run --rm curlimages/curl:7.81.0 -L -v http://"$(IP)":3000/",
 										  returnStdout: true)
 					if (!checkCurlOutput(curlOutput)) {
 							warnError(message: 'FAIL')
