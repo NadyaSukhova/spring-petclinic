@@ -11,6 +11,8 @@ pipeline {
 		VERSION = '2.5.0-SNAPSHOT'
 		ART_ID = 'spring-petclinic'
 		NET_PET = UUID.randomUUID().toString()
+		CURL_NAME = UUID.randomUUID().toString()
+		PET_NAME = UUID.randomUUID().toString()
 	}
     stages {
         stage("say something and create nerwork") {
@@ -18,8 +20,6 @@ pipeline {
                 echo 'Im just sayin'
 				echo 'open'
 				bat "docker network create ${NET_PET}"
-				bat "docker network rm ${NET_PET}"
-				echo 'close'
             }
         }
 		stage("build docker image") {
@@ -52,7 +52,7 @@ pipeline {
 				echo "pulling from Docker Hub"
                 bat "docker pull ${USER}/${REP}:${VERSION}"
 				echo "run the app"
-				bat "docker run -d -p 3000:3000 ${USER}/${REP}:${VERSION}"
+				bat "docker run --name ${PET_NAME} -d --network ${NET_PET} -p 3000:3000 ${USER}/${REP}:${VERSION}"
 				echo "now it is curl time"
             }
         }
@@ -61,7 +61,10 @@ pipeline {
 				echo "run curl container"
 				script {
 					sleep(60)
-					def curlOutput = bat (script: "docker run --rm curlimages/curl:7.81.0 -L -v http://${IP}:3000/",
+					def PET_IP = sh (
+                        script: "docker inspect -f '{{range.NetworkSettings.Networks}}{{.Gateway}}{{end}}' ${PET_NAME}",
+                        returnStdout: true).trim()
+					def curlOutput = bat (script: "docker run --name ${CURL_NAME} --rm --network ${NET_PET} curlimages/curl:7.81.0 -L -v ${PET_IP}:3000/",
 										  returnStdout: true)
 					if (!checkCurlOutput(curlOutput)) {
 							warnError(message: 'FAIL')
@@ -73,6 +76,7 @@ pipeline {
             }
         }
     }
+	
 }
 
 				
