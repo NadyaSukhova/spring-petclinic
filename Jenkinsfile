@@ -59,8 +59,11 @@ pipeline {
             steps {
 				echo "run curl container"
 				script {
-					sleep(120)
-					def curlOutput = bat (script: "docker run --rm curlimages/curl:7.81.0 -L -v http://127.0.0.1:3000/",
+					sleep(60)
+					def petclinicGateway = sh (
+                        script: "docker inspect -f '{{range.NetworkSettings.Networks}}{{.Gateway}}{{end}}' ${NET_PET}",
+                        returnStdout: true).trim()
+					def curlOutput = bat (script: "docker run --rm curlimages/curl:7.81.0 -L -v ${petclinicGateway}:3000/",
 										  returnStdout: true)
 					if (!checkCurlOutput(curlOutput)) {
 							warnError(message: 'FAIL')
