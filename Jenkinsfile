@@ -1,5 +1,5 @@
-def checkCurlOutput(String curlOutput) {
-    return curlOutput.contains('<title>PetClinic :: a Spring Framework demonstration</title>')
+def CHECK_CURL(String OUTPUT) {
+    return OUTPUT.contains('<title>PetClinic :: a Spring Framework demonstration</title>')
 }
 
 pipeline {
@@ -62,16 +62,15 @@ pipeline {
 					sleep(60)
 					def PET_IP = bat (
                         script: "docker inspect -f '{{range.NetworkSettings.Networks}}{{.Gateway}}{{end}}' ${PET_NAME}",
-                        returnStdout: true).trim().split(" ")
-					def P = PET_IP.last().replace("\'", "").trim()
-					println("get IP ${P}")
-					def curlOutput = bat (script: "docker run --name ${CURL_NAME} --rm --network ${NET_PET} curlimages/curl:7.81.0 -L -v ${P}:3000/",
+                        returnStdout: true).trim().split(" ").last().replace("\'", "").trim()
+					println("get IP: ${PET_IP}")
+					def RESULT = bat (script: "docker run --name ${CURL_NAME} --rm --network ${NET_PET} curlimages/curl:7.81.0 -L -v ${PET_IP}:3000/",
 										  returnStdout: true)
-					if (!checkCurlOutput(curlOutput)) {
-							warnError(message: 'FAIL')
+					if (CHECK_CURL(RESULT)) {
+							println("SUCCESS")
 						} 
 					else {
-							println("SUCCESS")
+							println("FAIL")
 						}
 				}
             }
