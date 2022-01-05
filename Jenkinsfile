@@ -63,7 +63,7 @@ pipeline {
 					def PET_IP = bat (
                         script: "docker inspect -f '{{range.NetworkSettings.Networks}}{{.Gateway}}{{end}}' ${PET_NAME}",
                         returnStdout: true).trim().split(" ")
-					def P = PET_IP.last()
+					def P = PET_IP.last().replace("\'", "")
 					println("get IP ${P}")
 					def curlOutput = bat (script: "docker run --name ${CURL_NAME} --rm --network ${NET_PET} curlimages/curl:7.81.0 -L -v ${P}:3000/",
 										  returnStdout: true)
