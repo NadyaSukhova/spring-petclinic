@@ -51,7 +51,8 @@ pipeline {
 				echo "pulling from Docker Hub"
                 bat "docker pull ${USER}/${REP}:${VERSION}"
 				echo "run the app"
-				bat "docker run -p 3000:3000 ${USER}/${REP}:${VERSION} &"
+				bat "docker run -d -p 3000:3000 ${USER}/${REP}:${VERSION}"
+				echo "now it is curl time"
             }
         }
 		stage("run curl") {
