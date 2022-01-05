@@ -52,13 +52,13 @@ pipeline {
                 bat "docker pull ${USER}/${REP}:${VERSION}"
 				echo "run the app"
 				bat "docker run -p 3000:3000 ${USER}/${REP}:${VERSION} &"
-				sleep(60)
             }
         }
 		stage("run curl") {
             steps {
 				echo "run curl container"
 				script {
+					sleep(60)
 					def curlOutput = bat (script: "docker run --rm curlimages/curl:7.81.0 -L -v http://localhost:3000/",
 										  returnStdout: true)
 					if (!checkCurlOutput(curlOutput)) {
