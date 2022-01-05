@@ -76,6 +76,15 @@ pipeline {
             }
         }
     }
+	post {
+		always{
+			bat "docker stop ${PET_NAME}"
+            bat "docker container rm ${PET_NAME}"
+            bat "docker network rm ${NET_PET}"
+            bat "docker stop ${CURL_NAME}"
+            bat "docker container rm ${CURL_NAME}"
+		}
+	}
 	
 }
 
