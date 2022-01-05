@@ -6,6 +6,7 @@ pipeline {
     agent any
 	environment {
 		USER = 'puffik4ever'
+		IP = credentials('MY_IP')
 		REP = 'petclinic'
 		VERSION = '2.5.0-SNAPSHOT'
 		ART_ID = 'spring-petclinic'
@@ -60,10 +61,7 @@ pipeline {
 				echo "run curl container"
 				script {
 					sleep(60)
-					def petclinicGateway = sh (
-                        script: "docker inspect -f '{{range.NetworkSettings.Networks}}{{.Gateway}}{{end}}' ${NET_PET}",
-                        returnStdout: true).trim()
-					def curlOutput = bat (script: "docker run --rm curlimages/curl:7.81.0 -L -v ${petclinicGateway}:3000/",
+					def curlOutput = bat (script: "docker run --rm curlimages/curl:7.81.0 -L -v http://$(IP):3000/",
 										  returnStdout: true)
 					if (!checkCurlOutput(curlOutput)) {
 							warnError(message: 'FAIL')
