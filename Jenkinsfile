@@ -1,5 +1,5 @@
 def CHECK_CURL(String OUTPUT) {
-    return OUTPUT.contains('<title>PetClinic :: a Spring Framework demonstration</title>')
+    return OUTPUT.contains('PetClinic :: a Spring Framework demonstration')
 }
 
 pipeline {
@@ -24,7 +24,6 @@ pipeline {
 		stage("build docker image") {
 			steps {
 				echo "building the image"
-				
 				script {
 					docker.build("${USER}/${REP}:${VERSION}", "--build-arg JAR_VERSION=${VERSION} --build-arg JAR_ARTIFACT_ID=${ART_ID} -f Dockerfile .")
 				}
